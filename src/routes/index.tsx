@@ -60,7 +60,7 @@ const ShowroomIframe = ({ link, productName, onLoad }: ShowroomIframeProps) => (
 );`;
 const content = guide.slice(guide.indexOf("## Overview"));
 const slug = (value: string) => value.toLowerCase().replace(/[^\w\s-]/g, "").replace(/\s+/g, "-").replace(/-+/g, "-");
-const headings = Array.from(content.matchAll(/^#{2,4} (.+)$/gm)).map((match) => ({ label: match[1].replace(/[`*]/g, ""), id: slug(match[1].replace(/[`*]/g, "")) }));
+const headings = Array.from(content.matchAll(/^#{2,4} (.+)$/gm)).map((match) => { const label = (match[1] ?? "").replace(/[`*]/g, ""); return { label, id: slug(label) }; });
 const searchItems = [{ label: "Quick start", id: "quick-start" }, ...headings];
 
 export const Route = createFileRoute("/")({
@@ -200,7 +200,7 @@ function DocsPage() {
 
       <aside className="hidden xl:block"><div className="frost sticky top-24 rounded-lg border border-border p-4">
         <p className="font-mono text-[10px] uppercase text-muted-foreground">On this page</p>
-        <div className="mt-3 space-y-1">{[allItems[0], allItems[4], allItems[5], allItems[6], allItems[9], allItems[11], allItems[14]].map((item) => <a key={item.id} href={`#${item.id}`} onClick={(event) => { event.preventDefault(); goTo(item.id); }} className={`block border-l-2 py-1 pl-2 text-xs transition-colors hover:text-primary ${active === item.id ? "border-primary font-medium text-foreground" : "border-transparent text-muted-foreground"}`}>{item.label}</a>)}</div>
+        <div className="mt-3 space-y-1">{["quick-start", "required-packages", "step-1-the-iframe", "step-2-the-see-it-live-button", "step-4-listening-to-postmessage-events", "step-5-status-polling", "security-considerations"].map((id) => { const item = allItems.find((entry) => entry.id === id); return item ? <a key={item.id} href={`#${item.id}`} onClick={(event) => { event.preventDefault(); goTo(item.id); }} className={`block border-l-2 py-1 pl-2 text-xs transition-colors hover:text-primary ${active === item.id ? "border-primary font-medium text-foreground" : "border-transparent text-muted-foreground"}`}>{item.label}</a> : null; })}</div>
         <div className="mt-6 border-t border-border pt-4"><p className="font-mono text-[10px] uppercase text-primary">A live showroom, in context</p><img src={showroom} alt="Illustrative furniture showroom with a red lounge chair" loading="lazy" width={640} height={512} className="mt-3 aspect-[4/3] w-full rounded-md object-cover" /><p className="mt-2 text-[11px] leading-5 text-muted-foreground">Illustrative preview · Your iframe loads your own showroom session.</p></div>
       </div></aside>
     </div>

@@ -906,6 +906,8 @@ export function ResponsiveVideoContainer() {
 
 ---
 
+## Step 5: Status Polling
+
 Before showing the "See It Live" button, check if the showroom link is currently active and available using your **Public API Key (`pk_live_`)**.
 
 ### API Endpoint
