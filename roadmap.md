@@ -1,0 +1,3 @@
+- [x] Translate the attached guide into a navigable documentation experience.
+- [x] Build readable frost styling and responsive navigation.
+- [x] Verify search, copy, navigation, and desktop/mobile rendering.
