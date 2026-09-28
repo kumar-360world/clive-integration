@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { isValidElement, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { ArrowDown, ArrowRight, Check, ChevronRight, Copy, ExternalLink, FileCode2, Menu, Search, X } from "lucide-react";
@@ -190,8 +190,8 @@ function DocsPage() {
             h3: ({ children }) => heading({ level: 3, children }),
             h4: ({ children }) => heading({ level: 4, children }),
             a: ({ href, children }) => href?.startsWith("./") ? <span title="This companion guide is not included in the supplied document" className="text-muted-foreground underline decoration-dotted">{children}</span> : <a href={href} target={href?.startsWith("http") ? "_blank" : undefined} rel={href?.startsWith("http") ? "noopener noreferrer" : undefined}>{children}</a>,
-            pre: ({ children }) => <>{children}</>,
-            code: ({ className, children }) => className?.startsWith("language-") ? <CodeBlock label={className.replace("language-", "")} code={String(children).replace(/\n$/, "")} /> : <code>{children}</code>,
+            pre: ({ children }) => { const codeElement = isValidElement<{ className?: string; children?: ReactNode }>(children) ? children : null; return <CodeBlock label={codeElement?.props.className?.replace("language-", "") || "text"} code={String(codeElement?.props.children ?? "").replace(/\n$/, "")} />; },
+            code: ({ children }) => <code>{children}</code>,
             table: ({ children }) => <div className="my-5 overflow-x-auto rounded-lg border border-border bg-panel/50"><table>{children}</table></div>,
           }}>{content}</ReactMarkdown>
         </article>
